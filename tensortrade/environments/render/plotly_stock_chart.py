@@ -147,7 +147,7 @@ class PlotlyTradingChart(BaseRenderer):
                 step=trade.step,
                 datetime=price_history.iloc[trade.step - 1]['datetime'],
                 side=trade.side.value.upper(),
-                qty=round(trade.size/trade.price, trade.pair.quote.precision),
+                qty=1,  # round(trade.size/trade.price, trade.pair.quote.precision),
                 size=trade.size,
                 quote_instrument=trade.quote_instrument,
                 price=trade.price,
@@ -190,8 +190,9 @@ class PlotlyTradingChart(BaseRenderer):
             self._create_figure(performance.keys())
 
         if self._show_chart:  # ensure chart visibility through notebook cell reruns
-            display(self.fig)
-            self._show_chart = False
+            # display(self.fig)
+            self.fig.show()
+            # self._show_chart = False
 
         self.fig.layout.title = self._create_log_entry(episode, max_episodes, step, max_steps)
         self._price_chart.update(dict(
@@ -200,7 +201,7 @@ class PlotlyTradingChart(BaseRenderer):
             low=price_history['low'],
             close=price_history['close']
         ))
-        self.fig.layout.annotations += self._create_trade_annotations(trades, price_history)
+        # self.fig.layout.annotations += self._create_trade_annotations(trades, price_history)
 
         self._volume_chart.update({'y': price_history['volume']})
 
